@@ -140,7 +140,7 @@ const WebcamCapture = (props) => {
         <button
           className="ui button"
           style={{ marginTop: "3%" }}
-          onClick={() => history.push("/yap/playground")}
+          onClick={() => history.push("/playground")}
         >
           Next
         </button>
