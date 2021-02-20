@@ -121,7 +121,7 @@ class DataUploader extends React.Component {
     };
     console.log(finalJson);
     axios
-      .post("https://15.207.67.182/upload", finalJson)
+      .post("https://15.207.67.182:5000/upload", finalJson)
       .then((res) => (document.getElementById("status").innerHTML = res.data));
   };
   render() {

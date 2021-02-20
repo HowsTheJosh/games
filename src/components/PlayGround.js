@@ -10,8 +10,6 @@ const PredictWebCam = (props) => {
   const webcamRef = React.useRef(null);
 
   const setStatus = (val) => {
-    console.log("setStatus");
-    console.log(val);
     if (statusbol) {
       if (val == 0) {
         document.getElementById("status").innerHTML = "DOWN";
@@ -28,10 +26,9 @@ const PredictWebCam = (props) => {
 
   const webcapture = React.useCallback(() => {
     // statusbol = 1;
-    console.log("func called ");
     const imageSrc = webcamRef.current.getScreenshot().split(",").pop();
     axios
-      .post("https://15.207.67.182/predict", {
+      .post("https://15.207.67.182:5000/predict", {
         imageSrc: imageSrc,
         idd: props.userId,
       })

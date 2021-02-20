@@ -13,7 +13,7 @@ class FbAuth extends React.Component {
       window.FB.getLoginStatus((response) => {
         if (response.status == "connected") {
           this.props.signIn(response.authResponse.userID);
-          history.push("/data-collection");
+          history.push("/yap/data-collection");
         } else {
           this.props.signOut();
         }
@@ -24,14 +24,14 @@ class FbAuth extends React.Component {
   login = () => {
     window.FB.login((response) => {
       this.props.signIn(response.authResponse.userID);
-      history.push("/data-collection");
+      history.push("/yap/data-collection");
     });
   };
 
   logout = () => {
     window.FB.logout(() => {
       this.props.signOut();
-      history.push("/");
+      history.push("/yap/");
     });
   };
 

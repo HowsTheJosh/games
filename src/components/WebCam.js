@@ -110,10 +110,10 @@ const WebcamCapture = (props) => {
     console.log(dataJson);
     if (ub64 >= 10 && lb64 >= 10 && db64 >= 10 && rb64 >= 10) {
       axios
-        .post("https://15.207.67.182/upload", dataJson)
+        .post("https://15.207.67.182:5000/upload", dataJson)
         .then((res) =>
           axios
-            .post("https://15.207.67.182/train_data", {
+            .post("https://15.207.67.182:5000/train_data", {
               idd: props.userId,
             })
             .then((res) => setBtnToggle(1))
@@ -140,7 +140,7 @@ const WebcamCapture = (props) => {
         <button
           className="ui button"
           style={{ marginTop: "3%" }}
-          onClick={() => history.push("/playground")}
+          onClick={() => history.push("/yap/playground")}
         >
           Next
         </button>
