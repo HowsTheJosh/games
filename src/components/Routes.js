@@ -12,11 +12,9 @@ export default class Routes extends Component {
       <div>
         <MemoryRouter history={history}>
           <Header />
-          <Switch>
-            <Route path="/" exact component={LandingPage} />
-            <Route path="/data-collection" component={WebcamCapture} />
-            <Route path="/playground" component={PlayGround} />
-          </Switch>
+          <Route path="/" exact component={LandingPage} />
+          <Route path="/data-collection" component={WebcamCapture} />
+          <Route path="/playground" component={PlayGround} />
         </MemoryRouter>
       </div>
     );
