@@ -1,20 +1,20 @@
 {
   "files": {
-    "main.js": "/yap/static/js/main.78969b70.chunk.js",
-    "main.js.map": "/yap/static/js/main.78969b70.chunk.js.map",
+    "main.js": "/yap/static/js/main.b7279931.chunk.js",
+    "main.js.map": "/yap/static/js/main.b7279931.chunk.js.map",
     "runtime-main.js": "/yap/static/js/runtime-main.87ee8333.js",
     "runtime-main.js.map": "/yap/static/js/runtime-main.87ee8333.js.map",
     "static/css/2.150d169a.chunk.css": "/yap/static/css/2.150d169a.chunk.css",
-    "static/js/2.f0c5c717.chunk.js": "/yap/static/js/2.f0c5c717.chunk.js",
-    "static/js/2.f0c5c717.chunk.js.map": "/yap/static/js/2.f0c5c717.chunk.js.map",
+    "static/js/2.598decda.chunk.js": "/yap/static/js/2.598decda.chunk.js",
+    "static/js/2.598decda.chunk.js.map": "/yap/static/js/2.598decda.chunk.js.map",
     "index.html": "/yap/index.html",
     "static/css/2.150d169a.chunk.css.map": "/yap/static/css/2.150d169a.chunk.css.map",
-    "static/js/2.f0c5c717.chunk.js.LICENSE.txt": "/yap/static/js/2.f0c5c717.chunk.js.LICENSE.txt"
+    "static/js/2.598decda.chunk.js.LICENSE.txt": "/yap/static/js/2.598decda.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.87ee8333.js",
     "static/css/2.150d169a.chunk.css",
-    "static/js/2.f0c5c717.chunk.js",
-    "static/js/main.78969b70.chunk.js"
+    "static/js/2.598decda.chunk.js",
+    "static/js/main.b7279931.chunk.js"
   ]
 }
