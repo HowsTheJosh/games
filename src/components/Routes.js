@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { MemoryRouter, Switch, Route } from "react-router-dom";
+import { Router, Switch, Route } from "react-router-dom";
 import WebcamCapture from "./WebCam";
 import history from "./History";
 import PlayGround from "./PlayGround";
@@ -10,12 +10,12 @@ export default class Routes extends Component {
   render() {
     return (
       <div>
-        <MemoryRouter history={history}>
+        <Router history={history}>
           <Header />
-          <Route path="/" exact component={LandingPage} />
-          <Route path="/data-collection" component={WebcamCapture} />
-          <Route path="/playground" component={PlayGround} />
-        </MemoryRouter>
+          <Route path="/yap" exact component={LandingPage} />
+          <Route path="/yap/data-collection" component={WebcamCapture} />
+          <Route path="/yap/playground" component={PlayGround} />
+        </Router>
       </div>
     );
   }
