@@ -10,3 +10,15 @@ export const signOut = () => {
     type: "SIGN_OUT",
   };
 };
+
+export const movement = (val) => {
+  return {
+    type: val,
+  };
+};
+
+export const gameStatus = (value) => {
+  return {
+    type: value,
+  };
+};

@@ -16,6 +16,7 @@ class FbAuth extends React.Component {
           // history.push("/yap/data-collection");
           history.push("/yap/playground");
         } else {
+          console.log("SIGNASDASDA");
           this.props.signOut();
         }
       });

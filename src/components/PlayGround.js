@@ -6,48 +6,63 @@ import { Link } from "react-router-dom";
 import SnakeGame from "../Games/Snake/SnakeGame";
 import Yag from "../Games/Yag";
 import ReactDOM from "react-dom";
+import { movement, gameStatus } from "../actions";
+import Test from "./Test";
+
 var twc = 28,
   x = 0,
-  statusbol = 1;
+  statusbol = 0;
 
 const PredictWebCam = (props) => {
-  const [h, setH] = useState(0);
+  const [snakeComponentCalled, setSnakeComponentCalled] = useState(false);
+  const [testComponentCalled, setTestComponentCalled] = useState(false);
   useEffect(() => {
     x = document.getElementById("headerdiv").clientHeight;
     twc = document.getElementById("twc").clientWidth;
   });
   const webcamRef = React.useRef(null);
 
-  const setStatus = (val) => {
+  const setStatus = (predictedVal) => {
     if (statusbol) {
-      if (val == 0) {
+      if (predictedVal == 0) {
+        props.movement("DOWN");
         document.getElementById("status").innerHTML = "DOWN";
-      } else if (val == 1) {
+      } else if (predictedVal == 1) {
+        props.movement("RIGHT");
         document.getElementById("status").innerHTML = "RIGHT";
-      } else if (val == 2) {
+      } else if (predictedVal == 2) {
+        props.movement("LEFT");
         document.getElementById("status").innerHTML = "LEFT";
       } else {
+        props.movement("UP");
         document.getElementById("status").innerHTML = "UP";
       }
-      setTimeout(webcapture, 500);
+      // console.log("BEFORE SET TIMEOUT");
+      setTimeout(webcapture, 0);
+      // console.log("AFTER SET TIMEOUT");
     }
   };
 
   const webcapture = React.useCallback(() => {
-    // statusbol = 1;
     const imageSrc = webcamRef.current.getScreenshot().split(",").pop();
-    // axios
-    //   .post("https://15.207.67.182:5000/predict", {
-    //     imageSrc: imageSrc,
-    //     idd: props.userId,
-    //   })
-    //   .then((res) => setStatus(res.data.Predicted));
+
+    axios
+      .post("https://15.207.67.182:5000/predict", {
+        imageSrc: imageSrc,
+        idd: props.userId,
+      })
+      .then((res) => setStatus(res.data.Predicted));
   }, [webcamRef]);
 
   const startCalling = () => {
     statusbol = 1;
     webcapture();
   };
+
+  const stopCalling = () => {
+    statusbol = 0;
+  };
+
   return (
     <>
       <h1>
@@ -67,23 +82,22 @@ const PredictWebCam = (props) => {
             <a
               className="item"
               id="showhere"
-              onClick={() =>
-                ReactDOM.render(
-                  <SnakeGame start={startCalling} />,
-                  document.getElementById("gamediv")
-                )
-              }
+              onClick={() => {
+                setTestComponentCalled(false);
+                setSnakeComponentCalled(true);
+              }}
             >
               Snake
             </a>
             <a
               className="item"
               id="showhere"
-              onClick={() =>
-                ReactDOM.render(<Yag />, document.getElementById("gamediv"))
-              }
+              onClick={() => {
+                setSnakeComponentCalled(false);
+                setTestComponentCalled(true);
+              }}
             >
-              YAG
+              TEST
             </a>
           </div>
           <div>
@@ -93,11 +107,14 @@ const PredictWebCam = (props) => {
               screenshotFormat="image/jpg"
               width={twc - 28}
             />
-            {/* <button onClick={startCalling}>Start</button> */}
-            <button onClick={() => (statusbol = 0)}>Stop</button>
           </div>
         </div>
-        <div id="gamediv" className="thirteen wide column"></div>
+        <div id="gamediv" className="thirteen wide column">
+          {snakeComponentCalled && (
+            <SnakeGame start={startCalling} stop={stopCalling} />
+          )}
+          {testComponentCalled && <Test />}
+        </div>
       </div>
     </>
   );
@@ -107,4 +124,4 @@ const mapStateToProps = (state) => {
   return { userId: state.auth.userId };
 };
 
-export default connect(mapStateToProps)(PredictWebCam);
+export default connect(mapStateToProps, { movement })(PredictWebCam);

@@ -2,9 +2,16 @@ import React, { Component } from "react";
 import Snake from "./Snake";
 import Food from "./Food";
 import "./SnakeGame.css";
+import { connect } from "react-redux";
+import Obstacle from "./Obstacle";
 
-var interval_time = 0;
+var interval_time = 0,
+  w = 0,
+  h = 0;
 const getRandomCoordinates = () => {
+  w = window.innerWidth;
+  h = window.innerHeight;
+  console.log(w, h);
   let min = 1;
   let max = 98;
   let x = Math.floor((Math.random() * (max - min + 1) + min) / 2) * 2;
@@ -12,24 +19,54 @@ const getRandomCoordinates = () => {
   return [x, y];
 };
 
-const initialState = {
-  food: getRandomCoordinates(),
-  speed: 200,
-  direction: "RIGHT",
-  snakeDots: [
-    [0, 0],
-    [2, 0],
-  ],
+const generateObstacle = () => {
+  let min = 1,
+    max = 98;
+  for (var i = 1; i <= 5; i++) {}
 };
 
+const initialState = {
+  food: getRandomCoordinates(),
+  speed: 100,
+  direction: "RIGHT",
+  snakeDots: [
+    [0, 50],
+    [2, 50],
+    [4, 50],
+  ],
+  renderButtonBol: 0,
+};
+const obstacle = [
+  [20, 20],
+  [20, 22],
+  [20, 24],
+  [20, 26],
+  [20, 28],
+  [20, 30],
+  [20, 32],
+  [20, 34],
+  [50, 22],
+  [50, 24],
+  [50, 26],
+  [50, 28],
+  [50, 30],
+  [50, 32],
+  [50, 34],
+];
 class SnakeGame extends Component {
   state = initialState;
 
   startgame = () => {
-    console.log("STARTGAEM");
+    this.setState({ renderButtonBol: 1 });
+    clearInterval(interval_time);
     this.props.start();
     interval_time = setInterval(this.moveSnake, this.state.speed);
-    document.onkeydown = this.onKeyDown;
+  };
+
+  stopgame = () => {
+    this.setState({ renderButtonBol: 0 });
+    this.props.stop();
+    clearInterval(interval_time);
   };
 
   componentDidUpdate() {
@@ -38,59 +75,46 @@ class SnakeGame extends Component {
     this.checkIfEat();
   }
 
-  onKeyDown = (e) => {
-    e = e || window.event;
-
-    switch (e.keyCode) {
-      case 38:
-        if (this.state.direction === "DOWN") {
-          break;
-        } else {
-          this.setState({ direction: "UP" });
-          break;
-        }
-      case 40:
-        if (this.state.direction === "UP") {
-          break;
-        } else {
-          this.setState({ direction: "DOWN" });
-          break;
-        }
-      case 37:
-        if (this.state.direction === "RIGHT") {
-          break;
-        } else {
-          this.setState({ direction: "LEFT" });
-          break;
-        }
-      case 39:
-        if (this.state.direction === "LEFT") {
-          break;
-        } else {
-          this.setState({ direction: "RIGHT" });
-          break;
-        }
-    }
-    console.log(this.state.direction);
-  };
-
   moveSnake = () => {
     let dots = [...this.state.snakeDots];
     let head = dots[dots.length - 1];
-
-    switch (this.state.direction) {
+    switch (this.props.dir_val) {
       case "RIGHT":
-        head = [head[0] + 2, head[1]];
-        break;
+        if (this.state.direction === "LEFT") {
+          head = [head[0] - 2, head[1]];
+          break;
+        } else {
+          this.setState({ direction: this.props.dir_val });
+          head = [head[0] + 2, head[1]];
+          break;
+        }
       case "LEFT":
-        head = [head[0] - 2, head[1]];
-        break;
+        if (this.state.direction === "RIGHT") {
+          head = [head[0] + 2, head[1]];
+          break;
+        } else {
+          this.setState({ direction: this.props.dir_val });
+          head = [head[0] - 2, head[1]];
+          break;
+        }
       case "DOWN":
-        head = [head[0], head[1] + 2];
-        break;
+        if (this.state.direction === "UP") {
+          head = [head[0], head[1] - 2];
+          break;
+        } else {
+          this.setState({ direction: this.props.dir_val });
+          head = [head[0], head[1] + 2];
+          break;
+        }
       case "UP":
-        head = [head[0], head[1] - 2];
-        break;
+        if (this.state.direction === "DOWN") {
+          head = [head[0], head[1] + 2];
+          break;
+        } else {
+          this.setState({ direction: this.props.dir_val });
+          head = [head[0], head[1] - 2];
+          break;
+        }
     }
     dots.push(head);
     dots.shift();
@@ -101,7 +125,6 @@ class SnakeGame extends Component {
 
   checkIfOutOfBorders() {
     let head = this.state.snakeDots[this.state.snakeDots.length - 1];
-
     if (head[0] >= 100 || head[1] >= 100 || head[0] < 0 || head[1] < 0) {
       this.onGameOver();
     }
@@ -110,8 +133,7 @@ class SnakeGame extends Component {
   checkIfCollapsed() {
     let snake = [...this.state.snakeDots];
     let head = snake[snake.length - 1];
-    snake.pop();
-    snake.forEach((dot) => {
+    obstacle.forEach((dot) => {
       // console.log(dot[0]);
       if (head[0] == dot[0] && head[1] == dot[1]) {
         this.onGameOver();
@@ -150,22 +172,50 @@ class SnakeGame extends Component {
   onGameOver() {
     alert(`Game Over. Snake length is ${this.state.snakeDots.length}`);
     this.setState(initialState);
+    this.props.stop();
     clearInterval(interval_time);
   }
-
-  render() {
-    return (
-      <>
-        <div className="game-area">
-          <Snake snakeDots={this.state.snakeDots} />
-          <Food dot={this.state.food} />
-        </div>
+  renderButton = () => {
+    if (this.state.renderButtonBol == 0) {
+      return (
         <button id="startgame" onClick={this.startgame}>
           Start Game
         </button>
+      );
+    } else {
+      return (
+        <button id="stopgame" onClick={this.stopgame}>
+          STOP GAMe
+        </button>
+      );
+    }
+  };
+  render() {
+    return (
+      <>
+        <div
+          id="myDiv"
+          className="game-area"
+          style={{ height: h * 0.8, width: w * 0.5 }}
+        >
+          <Snake snakeDots={this.state.snakeDots} />
+          <Obstacle obs={obstacle} />
+          <Food dot={this.state.food} />
+        </div>
+        <div>{this.renderButton()}</div>
+        {/* <button id="startgame" onClick={this.startgame}>
+          Start Game
+        </button>
+        <button id="stopgame" onClick={this.stopgame}>
+          STOP GAMe
+        </button> */}
       </>
     );
   }
 }
 
-export default SnakeGame;
+const mapStateToProps = (state) => {
+  return { dir_val: state.auth.dir };
+};
+
+export default connect(mapStateToProps)(SnakeGame);

@@ -12,9 +12,11 @@ export default class Routes extends Component {
       <div>
         <Router history={history}>
           <Header />
-          <Route path="/yap" exact component={LandingPage} />
-          <Route path="/yap/data-collection" component={WebcamCapture} />
-          <Route path="/yap/playground" component={PlayGround} />
+          <Switch>
+            <Route path="/yap" exact component={LandingPage} />
+            <Route path="/yap/data-collection" component={WebcamCapture} />
+            <Route path="/yap/playground" component={PlayGround} />
+          </Switch>
         </Router>
       </div>
     );
