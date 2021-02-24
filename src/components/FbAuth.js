@@ -2,9 +2,7 @@ import React from "react";
 import history from "./History";
 import { connect } from "react-redux";
 import { signIn, signOut, setUserName } from "../actions";
-import { renderIntoDocument } from "react-dom/test-utils";
-var userName = "",
-  id = 0;
+
 class FbAuth extends React.Component {
   componentDidMount() {
     window.fbAsyncInit = () => {
@@ -31,9 +29,13 @@ class FbAuth extends React.Component {
 
   login = () => {
     window.FB.login((res) => {
-      this.props.signIn(res.authResponse.userID);
-      this.setusernamefunc(res.authResponse.userID);
-      history.push("/games-ic/data-collection");
+      try {
+        this.props.signIn(res.authResponse.userID);
+        this.setusernamefunc(res.authResponse.userID);
+        history.push("/games-ic/data-collection");
+      } catch (err) {
+        alert("Login to continue...!!!");
+      }
     });
   };
 
@@ -48,13 +50,22 @@ class FbAuth extends React.Component {
     if (this.props.isSignedIn === "connected") {
       return (
         <div className="ui secondary menu">
-          <h2>{this.props.uname}</h2>
+          <div className="ui label" style={{ fontSize: "23px" }}>
+            {this.props.uname}
+          </div>
+
+          <button
+            className="ui green button large"
+            onClick={() => history.push("/games-ic/data-collection")}
+          >
+            <i className="home icon" />
+            Home
+          </button>
 
           <button
             onClick={this.logout}
-            className="ui blue facebook button right menu"
+            className="ui blue facebook button massive right menu"
           >
-            <i className="facebook icon" />
             Sign Out
           </button>
         </div>
@@ -62,6 +73,13 @@ class FbAuth extends React.Component {
     } else {
       return (
         <div className="ui secondary menu">
+          <button
+            className="ui green button large"
+            onClick={() => history.push("/games-ic/data-collection")}
+          >
+            <i className="home icon" />
+            Home
+          </button>
           <div
             onClick={this.login}
             className="ui animated button blue massive right menu"
@@ -70,7 +88,7 @@ class FbAuth extends React.Component {
             <div className="visible content">
               <i className="facebook icon "></i> Facebook
             </div>
-            <div className="hidden content  ">Sign In</div>
+            <div className="hidden content">Sign In</div>
           </div>
         </div>
       );

@@ -21,12 +21,6 @@ const getRandomCoordinates = () => {
   return [x, y];
 };
 
-const generateObstacle = () => {
-  let min = 1,
-    max = 98;
-  for (var i = 1; i <= 5; i++) {}
-};
-
 const initialState = {
   food: getRandomCoordinates(),
   speed: 100,
@@ -198,7 +192,11 @@ class SnakeGame extends Component {
   render() {
     return (
       <>
-        <h1>Current Score:{currentScore}</h1>
+        <div style={{ textAlign: "center" }}>
+          <h3>
+            <div>Current Score:{currentScore}</div>
+          </h3>
+        </div>
         <div
           id="myDiv"
           className="game-area"

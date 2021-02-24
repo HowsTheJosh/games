@@ -3,8 +3,13 @@ import FbAuth from "./FbAuth";
 
 const Header = () => {
   return (
-    <div className="ui segment" id="headerdiv">
-      <FbAuth />
+    <div id="headerdiv" className="ui segment">
+      <div className="ui secondary menu">
+        <h1>Games-IC </h1>
+        <div className="right menu">
+          <FbAuth />
+        </div>
+      </div>
     </div>
   );
 };

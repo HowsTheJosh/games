@@ -3,7 +3,8 @@ import Webcam from "react-webcam";
 import axios from "axios";
 import history from "./History";
 import { connect } from "react-redux";
-const upBase64 = [],
+
+var upBase64 = [],
   downBase64 = [],
   leftBase64 = [],
   rightBase64 = [];
@@ -87,7 +88,7 @@ const WebcamCapture = (props) => {
   }, [rightcamRef]);
 
   const arrayToString = (label, b64) => {
-    var AtoS = JSON.stringify(Object.assign({}, b64)); // convert array to string
+    var AtoS = JSON.stringify(Object.assign({}, b64));
     var temp = JSON.parse(AtoS);
     finalJson[label] = temp;
   };
@@ -99,7 +100,6 @@ const WebcamCapture = (props) => {
       lb64 = leftBase64.length,
       rb64 = rightBase64.length,
       db64 = downBase64.length;
-    var val = true;
 
     arrayToString("up", upBase64);
     arrayToString("down", downBase64);
@@ -107,7 +107,7 @@ const WebcamCapture = (props) => {
     arrayToString("left", rightBase64);
     dataJson["finalJson"] = finalJson;
     dataJson["userId"] = props.userId;
-    console.log(dataJson);
+
     if (ub64 >= 10 && lb64 >= 10 && db64 >= 10 && rb64 >= 10) {
       axios
         .post("https://15.207.67.182:5000/upload", dataJson)
@@ -140,7 +140,18 @@ const WebcamCapture = (props) => {
         <button
           className="ui button"
           style={{ marginTop: "3%" }}
-          onClick={() => history.push("/games-ic/playground")}
+          onClick={() => {
+            upBase64 = [];
+            downBase64 = [];
+            leftBase64 = [];
+            rightBase64 = [];
+            finalJson = {};
+            dataJson = {};
+            history.push({
+              pathname: "/games-ic/playground",
+              trainingStatus: 1,
+            });
+          }}
         >
           Next
         </button>
@@ -149,12 +160,6 @@ const WebcamCapture = (props) => {
   };
   return (
     <div className="container">
-      <div
-        className="ui segment "
-        style={{ textAlign: "center", fontSize: "20px" }}
-      >
-        Data Collection
-      </div>
       <div className="row">
         <div className="col"></div>
         <div className="col" style={{ margin: "0 auto", textAlign: "center" }}>

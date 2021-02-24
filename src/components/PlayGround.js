@@ -2,13 +2,9 @@ import React, { useState, useEffect } from "react";
 import Webcam from "react-webcam";
 import axios from "axios";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
 import SnakeGame from "../Games/Snake/SnakeGame";
-import Yag from "../Games/Yag";
-import ReactDOM from "react-dom";
-import { movement, gameStatus } from "../actions";
+import { movement } from "../actions";
 import Test from "../Games/PAC-MAN/Test";
-import history from "./History";
 
 var twc = 28,
   x = 0,
@@ -17,30 +13,30 @@ var twc = 28,
 const PredictWebCam = (props) => {
   const [snakeComponentCalled, setSnakeComponentCalled] = useState(false);
   const [testComponentCalled, setTestComponentCalled] = useState(false);
+
   useEffect(() => {
     x = document.getElementById("headerdiv").clientHeight;
     twc = document.getElementById("twc").clientWidth;
   });
+
   const webcamRef = React.useRef(null);
 
   const setStatus = (predictedVal) => {
     if (statusbol) {
       if (predictedVal == 0) {
         props.movement("DOWN");
-        document.getElementById("status").innerHTML = "DOWN";
+        // document.getElementById("status").innerHTML = "DOWN";
       } else if (predictedVal == 1) {
         props.movement("RIGHT");
-        document.getElementById("status").innerHTML = "RIGHT";
+        // document.getElementById("status").innerHTML = "RIGHT";
       } else if (predictedVal == 2) {
         props.movement("LEFT");
-        document.getElementById("status").innerHTML = "LEFT";
+        // document.getElementById("status").innerHTML = "LEFT";
       } else {
         props.movement("UP");
-        document.getElementById("status").innerHTML = "UP";
+        // document.getElementById("status").innerHTML = "UP";
       }
-      // console.log("BEFORE SET TIMEOUT");
       setTimeout(webcapture, 0);
-      // console.log("AFTER SET TIMEOUT");
     }
   };
 
@@ -70,13 +66,8 @@ const PredictWebCam = (props) => {
       <h1>
         <p id="status"></p>
       </h1>
-
       <div className="ui grid" style={{ height: window.innerHeight - x - 60 }}>
-        <div
-          id="twc"
-          className=" three wide column "
-          style={{ height: "100%" }}
-        >
+        <div id="twc" className=" three wide column" style={{ height: "100%" }}>
           <div>GAME LIST</div>
           <div
             className="ui vertical menu"
