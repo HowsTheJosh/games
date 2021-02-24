@@ -16,7 +16,7 @@ class FbAuth extends React.Component {
         if (response.status == "connected") {
           this.props.signIn(response.authResponse.userID);
           this.setusernamefunc(response.authResponse.userID);
-          history.push("/yap/data-collection");
+          history.push("/games-ic/data-collection");
         } else {
           this.props.signOut();
         }
@@ -33,14 +33,14 @@ class FbAuth extends React.Component {
     window.FB.login((res) => {
       this.props.signIn(res.authResponse.userID);
       this.setusernamefunc(res.authResponse.userID);
-      history.push("/yap/data-collection");
+      history.push("/games-ic/data-collection");
     });
   };
 
   logout = () => {
     window.FB.logout(() => {
       this.props.signOut();
-      history.push("/yap");
+      history.push("/games-ic");
     });
   };
 

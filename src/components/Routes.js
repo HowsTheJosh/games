@@ -13,9 +13,9 @@ export default class Routes extends Component {
         <Router history={history}>
           <Header />
           <Switch>
-            <Route path="/yap" exact component={LandingPage} />
-            <Route path="/yap/data-collection" component={WebcamCapture} />
-            <Route path="/yap/playground" component={PlayGround} />
+            <Route path="/games-ic" exact component={LandingPage} />
+            <Route path="/games-ic/data-collection" component={WebcamCapture} />
+            <Route path="/games-ic/playground" component={PlayGround} />
           </Switch>
         </Router>
       </div>
