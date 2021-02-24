@@ -1,8 +1,10 @@
 import React from "react";
 import history from "./History";
 import { connect } from "react-redux";
-import { signIn, signOut } from "../actions";
-
+import { signIn, signOut, setUserName } from "../actions";
+import { renderIntoDocument } from "react-dom/test-utils";
+var userName = "",
+  id = 0;
 class FbAuth extends React.Component {
   componentDidMount() {
     window.fbAsyncInit = () => {
@@ -13,19 +15,24 @@ class FbAuth extends React.Component {
       window.FB.getLoginStatus((response) => {
         if (response.status == "connected") {
           this.props.signIn(response.authResponse.userID);
-          // history.push("/yap/data-collection");
-          history.push("/yap/playground");
+          this.setusernamefunc(response.authResponse.userID);
+          history.push("/yap/data-collection");
         } else {
-          console.log("SIGNASDASDA");
           this.props.signOut();
         }
       });
     };
   }
+  setusernamefunc = (uid) => {
+    window.FB.api("/" + uid, "GET", { fields: "name" }, (response) => {
+      this.props.setUserName(response.name);
+    });
+  };
 
   login = () => {
-    window.FB.login((response) => {
-      this.props.signIn(response.authResponse.userID);
+    window.FB.login((res) => {
+      this.props.signIn(res.authResponse.userID);
+      this.setusernamefunc(res.authResponse.userID);
       history.push("/yap/data-collection");
     });
   };
@@ -40,27 +47,48 @@ class FbAuth extends React.Component {
   renderAuthButton() {
     if (this.props.isSignedIn === "connected") {
       return (
-        <button onClick={this.logout} className="ui blue facebook button">
-          <i className="facebook icon" />
-          Sign Out
-        </button>
+        <div className="ui secondary menu">
+          <h2>{this.props.uname}</h2>
+
+          <button
+            onClick={this.logout}
+            className="ui blue facebook button right menu"
+          >
+            <i className="facebook icon" />
+            Sign Out
+          </button>
+        </div>
       );
     } else {
       return (
-        <button onClick={this.login} className="ui blue facebook button">
-          <i className="facebook icon" />
-          Sign In
-        </button>
+        <div className="ui secondary menu">
+          <div
+            onClick={this.login}
+            className="ui animated button blue massive right menu"
+            tabIndex="0"
+          >
+            <div className="visible content">
+              <i className="facebook icon "></i> Facebook
+            </div>
+            <div className="hidden content  ">Sign In</div>
+          </div>
+        </div>
       );
     }
   }
   render() {
-    return <div>{this.renderAuthButton()}</div>;
+    return <>{this.renderAuthButton()}</>;
   }
 }
 
 const mapStateToProps = (state) => {
-  return { isSignedIn: state.auth.isSignedIn };
+  return {
+    isSignedIn: state.auth.isSignedIn,
+    userIdd: state.auth.userId,
+    uname: state.auth.userName,
+  };
 };
 
-export default connect(mapStateToProps, { signIn, signOut })(FbAuth);
+export default connect(mapStateToProps, { signIn, signOut, setUserName })(
+  FbAuth
+);

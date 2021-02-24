@@ -4,10 +4,13 @@ const INITIAL_STATE = {
   isSignedIn: "unknown",
   userId: "",
   dir: "RIGHT",
+  userName: "",
 };
 
 const authReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case "SET_USERNAME":
+      return { ...state, userName: `Welcome ${action.payload}` };
     case "SIGN_IN":
       return { ...state, isSignedIn: "connected", userId: action.payload };
     case "SIGN_OUT":

@@ -16,3 +16,9 @@ export const movement = (val) => {
     type: val,
   };
 };
+export const setUserName = (username) => {
+  return {
+    type: "SET_USERNAME",
+    payload: username,
+  };
+};
