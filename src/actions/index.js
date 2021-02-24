@@ -16,9 +16,3 @@ export const movement = (val) => {
     type: val,
   };
 };
-
-export const gameStatus = (value) => {
-  return {
-    type: value,
-  };
-};
