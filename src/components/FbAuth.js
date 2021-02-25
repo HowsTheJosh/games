@@ -50,29 +50,6 @@ class FbAuth extends React.Component {
     if (this.props.isSignedIn === "connected") {
       return (
         <div className="ui secondary menu">
-          <div className="ui label" style={{ fontSize: "23px" }}>
-            {this.props.uname}
-          </div>
-
-          <button
-            className="ui green button large"
-            onClick={() => history.push("/games-ic")}
-          >
-            <i className="home icon" />
-            Home
-          </button>
-          <button
-            className="ui green button large"
-            onClick={() => history.push("/games-ic/get-started")}
-          >
-            <i className="info icon" />
-            Get Started
-          </button>
-          <button className="ui green button large">
-            <i className="info icon" />
-            <a> Privacy Policy</a>
-          </button>
-
           <button
             onClick={this.logout}
             className="ui blue facebook button massive right menu"
@@ -84,30 +61,6 @@ class FbAuth extends React.Component {
     } else {
       return (
         <div className="ui secondary menu">
-          <button
-            className="ui green button large"
-            onClick={() => history.push("/games-ic")}
-          >
-            <i className="home icon" />
-            Home
-          </button>
-          <button
-            className="ui green button large"
-            onClick={() => history.push("/games-ic/get-started")}
-          >
-            <i className="info icon" />
-            Get Started
-          </button>
-          <button
-            className="ui green button large"
-            onClick={() =>
-              (window.location.href =
-                "https://www.termsfeed.com/live/533ef9ae-a10f-4065-b0c6-a4581222d0c9")
-            }
-          >
-            <i className="file icon" />
-            Privacy Policy
-          </button>
           <div
             onClick={this.login}
             className="ui animated button blue massive right menu"

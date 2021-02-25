@@ -14,7 +14,7 @@ const authReducer = (state = INITIAL_STATE, action) => {
     case "SIGN_IN":
       return { ...state, isSignedIn: "connected", userId: action.payload };
     case "SIGN_OUT":
-      return { ...state, isSignedIn: "unknown", userId: "null" };
+      return { ...state, userName: "", isSignedIn: "unknown", userId: "null" };
     case "UP":
       return { ...state, dir: "UP" };
     case "DOWN":
