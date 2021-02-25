@@ -56,10 +56,21 @@ class FbAuth extends React.Component {
 
           <button
             className="ui green button large"
-            onClick={() => history.push("/games-ic/data-collection")}
+            onClick={() => history.push("/games-ic")}
           >
             <i className="home icon" />
             Home
+          </button>
+          <button
+            className="ui green button large"
+            onClick={() => history.push("/games-ic/get-started")}
+          >
+            <i className="info icon" />
+            Get Started
+          </button>
+          <button className="ui green button large">
+            <i className="info icon" />
+            <a> Privacy Policy</a>
           </button>
 
           <button
@@ -75,10 +86,27 @@ class FbAuth extends React.Component {
         <div className="ui secondary menu">
           <button
             className="ui green button large"
-            onClick={() => history.push("/games-ic/data-collection")}
+            onClick={() => history.push("/games-ic")}
           >
             <i className="home icon" />
             Home
+          </button>
+          <button
+            className="ui green button large"
+            onClick={() => history.push("/games-ic/get-started")}
+          >
+            <i className="info icon" />
+            Get Started
+          </button>
+          <button
+            className="ui green button large"
+            onClick={() =>
+              (window.location.href =
+                "https://www.termsfeed.com/live/533ef9ae-a10f-4065-b0c6-a4581222d0c9")
+            }
+          >
+            <i className="file icon" />
+            Privacy Policy
           </button>
           <div
             onClick={this.login}
