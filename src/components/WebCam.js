@@ -1,14 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Webcam from "react-webcam";
 import axios from "axios";
 import history from "./History";
 import { connect } from "react-redux";
-
 var upBase64 = [],
   downBase64 = [],
   leftBase64 = [],
-  rightBase64 = [];
-var finalJson = {},
+  rightBase64 = [],
+  finalJson = {},
   dataJson = {};
 
 const WebcamCapture = (props) => {
@@ -17,7 +16,11 @@ const WebcamCapture = (props) => {
   const downcamRef = React.useRef(null);
   const leftcamRef = React.useRef(null);
   const rightcamRef = React.useRef(null);
-
+  useEffect(() => {
+    if (props.userId == "" || props.userId == "null") {
+      history.push("/games-ic/");
+    }
+  }, []);
   const upcapture = React.useCallback(() => {
     for (var i = 0; i < 10; i++) {
       try {
@@ -109,6 +112,8 @@ const WebcamCapture = (props) => {
     dataJson["userId"] = props.userId;
 
     if (ub64 >= 10 && lb64 >= 10 && db64 >= 10 && rb64 >= 10) {
+      var btn = document.getElementById("train-button");
+      btn.parentNode.removeChild(btn);
       axios
         .post("https://15.207.67.182:5000/upload", dataJson)
         .then((res) =>
@@ -136,6 +141,7 @@ const WebcamCapture = (props) => {
     } else {
       document.getElementById("status").innerHTML = "Trained";
       document.getElementById("status").style.fontSize = "25px";
+
       return (
         <button
           className="ui button"
@@ -192,6 +198,7 @@ const WebcamCapture = (props) => {
         </div>
         <div className="col" style={{ margin: "0 auto", textAlign: "center" }}>
           <button
+            id="train-button"
             onClick={startTraining}
             className="ui button"
             style={{ marginTop: "25%" }}
@@ -199,10 +206,14 @@ const WebcamCapture = (props) => {
             Train
           </button>
           <div>
-            <p
+            <div
               id="status"
-              style={{ margin: "0 auto", textAlign: "center" }}
-            ></p>
+              style={{
+                margin: "0 auto",
+                textAlign: "center",
+                marginTop: "20%",
+              }}
+            ></div>
             {setTrainBtn()}
           </div>
         </div>

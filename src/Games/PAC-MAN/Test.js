@@ -9,9 +9,7 @@ class Test extends Component {
   }
 }
 const mapStateToProps = (state) => {
-  //   console.log(state);
-  return { value: state.auth.dir };
+  return { value: state.moveReducer.dir };
 };
 
 export default connect(mapStateToProps)(Test);
-// export default Test;

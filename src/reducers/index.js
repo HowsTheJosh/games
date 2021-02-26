@@ -6,6 +6,20 @@ const INITIAL_STATE = {
   dir: "RIGHT",
   userName: "",
 };
+const movementReducer = (state = INITIAL_STATE, action) => {
+  switch (action.type) {
+    case "UP":
+      return { ...state, dir: "UP" };
+    case "DOWN":
+      return { ...state, dir: "DOWN" };
+    case "RIGHT":
+      return { ...state, dir: "RIGHT" };
+    case "LEFT":
+      return { ...state, dir: "LEFT" };
+    default:
+      return state;
+  }
+};
 
 const authReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
@@ -30,4 +44,5 @@ const authReducer = (state = INITIAL_STATE, action) => {
 
 export default combineReducers({
   auth: authReducer,
+  moveReducer: movementReducer,
 });

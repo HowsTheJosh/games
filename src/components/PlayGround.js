@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import SnakeGame from "../Games/Snake/SnakeGame";
 import { movement } from "../actions";
 import Test from "../Games/PAC-MAN/Test";
-
+import history from "./History";
 var twc = 28,
   x = 0,
   statusbol = 0;
@@ -17,7 +17,11 @@ const PredictWebCam = (props) => {
   useEffect(() => {
     x = document.getElementById("headerdiv").clientHeight;
     twc = document.getElementById("twc").clientWidth;
-  });
+
+    if (props.userId == "" || props.userId == "null") {
+      history.push("/games-ic/");
+    }
+  }, []);
 
   const webcamRef = React.useRef(null);
 

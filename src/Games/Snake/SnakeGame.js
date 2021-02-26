@@ -8,22 +8,60 @@ import Obstacle from "./Obstacle";
 var interval_time = 0,
   w = 0,
   h = 0,
-  currentScore = 0;
+  currentScore = 3;
 
+const obstacle = [
+  [20, 20],
+  [20, 22],
+  [20, 24],
+  [20, 26],
+  [20, 28],
+  [20, 30],
+  [80, 20],
+  [80, 22],
+  [80, 24],
+  [80, 26],
+  [80, 28],
+  [80, 30],
+  [20, 70],
+  [20, 72],
+  [20, 74],
+  [20, 76],
+  [20, 78],
+  [20, 80],
+  [80, 70],
+  [80, 72],
+  [80, 74],
+  [80, 76],
+  [80, 78],
+  [80, 80],
+];
 const getRandomCoordinates = () => {
   w = window.innerWidth;
   h = window.innerHeight;
-  console.log(w, h);
   let min = 1;
   let max = 98;
-  let x = Math.floor((Math.random() * (max - min + 1) + min) / 2) * 2;
-  let y = Math.floor((Math.random() * (max - min + 1) + min) / 2) * 2;
+  while (1) {
+    var z = 1;
+    var x = Math.floor((Math.random() * (98 - 1 + 1) + 1) / 2) * 2;
+    var y = Math.floor((Math.random() * (98 - 1 + 1) + 1) / 2) * 2;
+    for (let i = 0; i < 24; i++) {
+      if (obstacle[i][0] === x && obstacle[i][1] === y) {
+        z = 0;
+        break;
+      }
+    }
+    if (z == 1) {
+      break;
+    }
+  }
+
   return [x, y];
 };
 
 const initialState = {
   food: getRandomCoordinates(),
-  speed: 100,
+  speed: 150,
   direction: "RIGHT",
   snakeDots: [
     [0, 50],
@@ -32,26 +70,8 @@ const initialState = {
   ],
   renderButtonBol: 0,
 };
-const obstacle = [
-  [20, 20],
-  [20, 22],
-  [20, 24],
-  [20, 26],
-  [20, 28],
-  [20, 30],
-  [20, 32],
-  [20, 34],
-  [50, 22],
-  [50, 24],
-  [50, 26],
-  [50, 28],
-  [50, 30],
-  [50, 32],
-  [50, 34],
-];
 class SnakeGame extends Component {
   state = initialState;
-
   startgame = () => {
     this.setState({ renderButtonBol: 1 });
     clearInterval(interval_time);
@@ -132,7 +152,6 @@ class SnakeGame extends Component {
     let snake = [...this.state.snakeDots];
     let head = snake[snake.length - 1];
     obstacle.forEach((dot) => {
-      // console.log(dot[0]);
       if (head[0] == dot[0] && head[1] == dot[1]) {
         this.onGameOver();
       }
@@ -173,6 +192,7 @@ class SnakeGame extends Component {
     this.setState(initialState);
     this.props.stop();
     clearInterval(interval_time);
+    currentScore = 3;
   }
   renderButton = () => {
     if (this.state.renderButtonBol == 0) {
@@ -213,7 +233,7 @@ class SnakeGame extends Component {
 }
 
 const mapStateToProps = (state) => {
-  return { dir_val: state.auth.dir };
+  return { dir_val: state.moveReducer.dir };
 };
 
 export default connect(mapStateToProps)(SnakeGame);

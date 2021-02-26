@@ -30,13 +30,7 @@ const Header = (props) => {
             <i className="home icon" />
             Home
           </button>
-          <button
-            className="ui green button large"
-            onClick={() => history.push("/games-ic/get-started")}
-          >
-            <i className="info icon" />
-            Get Started
-          </button>
+
           <button
             className="ui green button large"
             style={{ marginRight: 10 }}
