@@ -66,7 +66,7 @@ class LandingPage extends React.Component {
   componentDidMount() {
     if (this.props.userId == "" || this.props.userId == "null") {
     } else {
-      history.push("/games-ic/data-collection");
+      history.push("/games-ic/playground");
     }
   }
 

@@ -13,7 +13,8 @@ import * as facemesh from "@tensorflow-models/face-landmarks-detection";
 var twc = 28,
   x = 0,
   statusbol = 0;
-var net, sti;
+var net = null,
+  sti;
 const PredictWebCam = (props) => {
   const webcamRef = useRef(null);
   // const canvasRef = useRef(null);
@@ -21,6 +22,9 @@ const PredictWebCam = (props) => {
   const [testComponentCalled, setTestComponentCalled] = useState(false);
 
   useEffect(() => {
+    if (props.userId == "" || props.userId == "null") {
+      history.push("/games-ic/");
+    }
     runFacemesh();
     x = document.getElementById("headerdiv").clientHeight;
     twc = document.getElementById("twc").clientWidth;
@@ -28,10 +32,10 @@ const PredictWebCam = (props) => {
 
   const runFacemesh = async () => {
     // NEW MODEL
+
     net = await facemesh.load(facemesh.SupportedPackages.mediapipeFacemesh, {
       maxFaces: 1,
     });
-    console.log("MODEL LOADED");
   };
 
   const detect = async (net) => {
@@ -126,7 +130,7 @@ const PredictWebCam = (props) => {
     statusbol = 1;
     sti = setInterval(() => {
       detect(net);
-    }, 250);
+    }, 150);
   };
 
   const stopCalling = () => {
