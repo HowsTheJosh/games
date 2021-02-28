@@ -77,13 +77,13 @@ class LandingPage extends React.Component {
           style={{
             fontSize: "85px",
             textAlign: "center",
-            marginTop: "10%",
+            marginTop: "15%",
             fontFamily: "Courier New",
           }}
         >
           <Typical wrapper="span" steps={step1} loop={Infinity} />
         </div>
-        <div
+        {/* <div
           id="button-left"
           className=" ui green animated  button massive "
           tabIndex="0"
@@ -95,7 +95,7 @@ class LandingPage extends React.Component {
           <div className="hidden content">
             <i className="right arrow icon"></i>
           </div>
-        </div>
+        </div> */}
 
         <MyVerticallyCenteredModal
           show={this.state.modalShow}

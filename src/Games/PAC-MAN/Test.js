@@ -5,7 +5,11 @@ class Test extends Component {
     this.props.stop();
   }
   render() {
-    return <div>IN DEVELOPMENT</div>;
+    return (
+      <div>
+        <h1>IN DEVELOPMENT</h1>
+      </div>
+    );
   }
 }
 const mapStateToProps = (state) => {
