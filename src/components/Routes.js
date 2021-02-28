@@ -14,7 +14,7 @@ export default class Routes extends Component {
           <Header />
           <Switch>
             <Route path="/games-ic" exact component={LandingPage} />
-            <Route path="/games-ic/data-collection" component={WebcamCapture} />
+            {/* <Route path="/games-ic/data-collection" component={WebcamCapture} /> */}
             <Route path="/games-ic/playground" component={PlayGround} />
           </Switch>
         </Router>

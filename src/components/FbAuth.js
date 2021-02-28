@@ -14,7 +14,7 @@ class FbAuth extends React.Component {
         if (response.status == "connected") {
           this.props.signIn(response.authResponse.userID);
           this.setusernamefunc(response.authResponse.userID);
-          history.push("/games-ic/data-collection");
+          history.push("/games-ic/playground");
         } else {
           this.props.signOut();
         }
@@ -32,7 +32,7 @@ class FbAuth extends React.Component {
       try {
         this.props.signIn(res.authResponse.userID);
         this.setusernamefunc(res.authResponse.userID);
-        history.push("/games-ic/data-collection");
+        history.push("/games-ic/playground");
       } catch (err) {
         alert("Login to continue...!!!");
       }
