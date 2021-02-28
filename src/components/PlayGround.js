@@ -8,12 +8,12 @@ import Test from "../Games/PAC-MAN/Test";
 import history from "./History";
 import * as tf from "@tensorflow/tfjs";
 import * as facemesh from "@tensorflow-models/face-landmarks-detection";
-import { drawMesh } from "./utilities";
+// import { drawMesh } from "./utilities";
 
 var twc = 28,
   x = 0,
   statusbol = 0;
-var net;
+var net, sti;
 const PredictWebCam = (props) => {
   const webcamRef = useRef(null);
   // const canvasRef = useRef(null);
@@ -22,13 +22,8 @@ const PredictWebCam = (props) => {
 
   useEffect(() => {
     runFacemesh();
-
     x = document.getElementById("headerdiv").clientHeight;
     twc = document.getElementById("twc").clientWidth;
-
-    if (props.userId == "" || props.userId == "null") {
-      // history.push("/games-ic/");
-    }
   }, []);
 
   const runFacemesh = async () => {
@@ -57,48 +52,86 @@ const PredictWebCam = (props) => {
       });
     }
   };
-  //face mesh end
 
-  // const setStatus = (predictedVal) => {
-  //   if (statusbol) {
-  //     if (predictedVal == 0) {
-  //       props.movement("DOWN");
-  //       // document.getElementById("status").innerHTML = "DOWN";
-  //     } else if (predictedVal == 1) {
-  //       props.movement("RIGHT");
-  //       // document.getElementById("status").innerHTML = "RIGHT";
-  //     } else if (predictedVal == 2) {
-  //       props.movement("LEFT");
-  //       // document.getElementById("status").innerHTML = "LEFT";
-  //     } else {
-  //       props.movement("UP");
-  //       // document.getElementById("status").innerHTML = "UP";
-  //     }
-  //     // setTimeout(webcapture, 0);
-  //   }
-  // };
+  const calculateAngleRatio = (
+    nose_x,
+    nose_y,
+    left_x,
+    left_y,
+    right_x,
+    right_y,
+    up_x,
+    up_y,
+    down_x,
+    down_y
+  ) => {
+    var dAx = right_x - nose_x;
+    var dAy = right_y - nose_y;
+    var dBx = nose_x - left_x;
+    var dBy = nose_y - left_y;
+    var angleUD = Math.atan2(dAx * dBy - dAy * dBx, dAx * dBx + dAy * dBy);
+    var degree_angleUD = angleUD * (180 / Math.PI);
+    var dCx = up_x - nose_x;
+    var dCy = up_y - nose_y;
+    var dDx = nose_x - down_x;
+    var dDy = nose_y - down_y;
+    var angleLR = Math.atan2(dCx * dDy - dCy * dDx, dCx * dDx + dCy * dDy);
+    var degree_angleLR = angleLR * (180 / Math.PI);
+    return [degree_angleUD, degree_angleLR];
+  };
 
-  // const webcapture = React.useCallback(() => {
-  //   try {
-  //     const imageSrc = webcamRef.current.getScreenshot().split(",").pop();
-  //     axios
-  //       .post("https://15.207.67.182:5000/predict", {
-  //         imageSrc: imageSrc,
-  //         idd: props.userId,
-  //       })
-  //       .then((res) => setStatus(res.data.Predicted));
-  //   } catch (err) {}
-  // }, [webcamRef]);
+  // Drawing Mesh
+  const drawMesh = (predictions) => {
+    console.log("inside drawMesh");
+    if (predictions.length > 0) {
+      predictions.forEach((prediction) => {
+        const keypoints = prediction.scaledMesh;
+
+        //find vector components
+        var [angleUD, angleLR] = calculateAngleRatio(
+          keypoints[1][0],
+          keypoints[1][1],
+          keypoints[93][0],
+          keypoints[93][1],
+          keypoints[323][0],
+          keypoints[323][1],
+          keypoints[9][0],
+          keypoints[9][1],
+          keypoints[199][0],
+          keypoints[199][1]
+        );
+        if (
+          (angleLR < -20 || angleLR > 20) &&
+          (angleUD < -30 || angleUD > 40)
+        ) {
+          if (angleLR < -20) {
+            props.movement("RIGHT");
+          } else if (angleLR > 20) {
+            props.movement("LEFT");
+          }
+        } else {
+          if (angleUD < -30) {
+            props.movement("UP");
+          } else if (angleUD > 40) {
+            props.movement("DOWN");
+          } else {
+            // props.movement("sdfkj");
+          }
+        }
+      });
+    }
+  };
 
   const startCalling = () => {
     statusbol = 1;
-    setInterval(() => {
+    sti = setInterval(() => {
       detect(net);
-    }, 1000);
+    }, 250);
   };
 
   const stopCalling = () => {
     statusbol = 0;
+    clearInterval(sti);
   };
 
   return (
@@ -164,7 +197,6 @@ const PredictWebCam = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  return { userId: state.auth.userId };
+  return { ...state };
 };
-
 export default connect(mapStateToProps, { movement })(PredictWebCam);
