@@ -8,8 +8,7 @@ import Test from "../Games/PAC-MAN/Test";
 import history from "./History";
 import * as tf from "@tensorflow/tfjs";
 import * as facemesh from "@tensorflow-models/face-landmarks-detection";
-// import { drawMesh } from "./utilities";
-
+import PlaygroundDef from "./PlaygroundDef";
 var twc = 28,
   x = 0,
   statusbol = 0;
@@ -17,24 +16,22 @@ var net = null,
   sti;
 const PredictWebCam = (props) => {
   const webcamRef = useRef(null);
-  // const canvasRef = useRef(null);
   const [snakeComponentCalled, setSnakeComponentCalled] = useState(false);
   const [testComponentCalled, setTestComponentCalled] = useState(false);
-
+  const [
+    playgroundDefComponenetCalled,
+    setPlaygroundDefComponenetCalled,
+  ] = useState(true);
   useEffect(() => {
-    if (props.userId == "" || props.userId == "null") {
-      history.push("/games-ic/");
-    }
     runFacemesh();
     x = document.getElementById("headerdiv").clientHeight;
     twc = document.getElementById("twc").clientWidth;
   }, []);
 
   const runFacemesh = async () => {
-    // NEW MODEL
-
     net = await facemesh.load(facemesh.SupportedPackages.mediapipeFacemesh, {
       maxFaces: 1,
+      shouldLoadIrisModel: false,
     });
   };
 
@@ -44,12 +41,14 @@ const PredictWebCam = (props) => {
       webcamRef.current !== null &&
       webcamRef.current.video.readyState === 4
     ) {
-      // Get Video Properties
       const video = webcamRef.current.video;
 
       webcamRef.current.video.width = twc - 28;
 
-      const face = await net.estimateFaces({ input: video });
+      const face = await net.estimateFaces({
+        input: video,
+        predictIrises: false,
+      });
 
       requestAnimationFrame(() => {
         drawMesh(face);
@@ -84,14 +83,11 @@ const PredictWebCam = (props) => {
     return [degree_angleUD, degree_angleLR];
   };
 
-  // Drawing Mesh
   const drawMesh = (predictions) => {
-    console.log("inside drawMesh");
     if (predictions.length > 0) {
       predictions.forEach((prediction) => {
         const keypoints = prediction.scaledMesh;
 
-        //find vector components
         var [angleUD, angleLR] = calculateAngleRatio(
           keypoints[1][0],
           keypoints[1][1],
@@ -119,7 +115,6 @@ const PredictWebCam = (props) => {
           } else if (angleUD > 40) {
             props.movement("DOWN");
           } else {
-            // props.movement("sdfkj");
           }
         }
       });
@@ -144,17 +139,22 @@ const PredictWebCam = (props) => {
         <p id="status"></p>
       </h1>
       <div className="ui grid" style={{ height: window.innerHeight - x - 60 }}>
-        <div id="twc" className=" three wide column" style={{ height: "100%" }}>
+        <div
+          id="twc"
+          className=" three wide column"
+          style={{ height: "100%", paddingTop: "0" }}
+        >
           <div>GAME LIST</div>
           <div
             className="ui vertical menu"
-            style={{ overflowY: "auto", height: "70%", width: "100%" }}
+            style={{ overflowY: "auto", height: "69%", width: "100%" }}
           >
             <a
               className="item"
               id="showhere"
               onClick={() => {
                 setTestComponentCalled(false);
+                setPlaygroundDefComponenetCalled(false);
                 setSnakeComponentCalled(true);
               }}
             >
@@ -165,6 +165,7 @@ const PredictWebCam = (props) => {
               id="showhere"
               onClick={() => {
                 setSnakeComponentCalled(false);
+                setPlaygroundDefComponenetCalled(false);
                 setTestComponentCalled(true);
               }}
             >
@@ -173,25 +174,20 @@ const PredictWebCam = (props) => {
           </div>
           <div>
             <Webcam audio={false} mirrored ref={webcamRef} width={twc - 28} />
-            {/* <canvas
-              ref={canvasRef}
-              style={{
-                position: "absolute",
-                marginLeft: "auto",
-                marginRight: "auto",
-                left: 0,
-                right: 0,
-                textAlign: "center",
-                zindex: 9,
-                width: 640,
-                height: 480,
-              }}
-            /> */}
           </div>
         </div>
-        <div id="gamediv" className="thirteen wide column">
+        <div
+          id="gamediv"
+          className="thirteen wide column"
+          style={{ paddingTop: 0 }}
+        >
+          {playgroundDefComponenetCalled && <PlaygroundDef />}
           {snakeComponentCalled && (
-            <SnakeGame start={startCalling} stop={stopCalling} />
+            <SnakeGame
+              currentScore={3}
+              start={startCalling}
+              stop={stopCalling}
+            />
           )}
           {testComponentCalled && <Test stop={stopCalling} />}
         </div>
@@ -201,6 +197,6 @@ const PredictWebCam = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  return { ...state };
+  return { userId: state.auth.userId };
 };
 export default connect(mapStateToProps, { movement })(PredictWebCam);

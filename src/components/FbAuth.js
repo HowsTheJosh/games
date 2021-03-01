@@ -4,7 +4,8 @@ import { connect } from "react-redux";
 import { signIn, signOut, setUserName } from "../actions";
 
 class FbAuth extends React.Component {
-  componentDidMount() {
+  constructor(props) {
+    super(props);
     window.fbAsyncInit = () => {
       window.FB.init({
         appId: "2260742510736157",
@@ -14,9 +15,10 @@ class FbAuth extends React.Component {
         if (response.status == "connected") {
           this.props.signIn(response.authResponse.userID);
           this.setusernamefunc(response.authResponse.userID);
-          history.push("/games-ic/playground");
+          history.push("/games/playground");
         } else {
           this.props.signOut();
+          history.push("/games")
         }
       });
     };
@@ -32,7 +34,7 @@ class FbAuth extends React.Component {
       try {
         this.props.signIn(res.authResponse.userID);
         this.setusernamefunc(res.authResponse.userID);
-        history.push("/games-ic/playground");
+        history.push("/games/playground");
       } catch (err) {
         alert("Login to continue...!!!");
       }
@@ -42,7 +44,7 @@ class FbAuth extends React.Component {
   logout = () => {
     window.FB.logout(() => {
       this.props.signOut();
-      history.push("/games-ic");
+      history.push("/games");
     });
   };
 

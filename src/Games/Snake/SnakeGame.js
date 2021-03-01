@@ -8,7 +8,7 @@ import Obstacle from "./Obstacle";
 var interval_time = 0,
   w = 0,
   h = 0,
-  currentScore = 3;
+  currScore = 0;
 
 const obstacle = [
   [20, 20],
@@ -39,12 +39,11 @@ const obstacle = [
 const getRandomCoordinates = () => {
   w = window.innerWidth;
   h = window.innerHeight;
-  let min = 1;
-  let max = 98;
+
   while (1) {
     var z = 1;
-    var x = Math.floor((Math.random() * (98 - 1 + 1) + 1) / 2) * 2;
-    var y = Math.floor((Math.random() * (98 - 1 + 1) + 1) / 2) * 2;
+    var x = Math.floor((Math.random() * 98 + 1) / 2) * 2;
+    var y = Math.floor((Math.random() * 98 + 1) / 2) * 2;
     for (let i = 0; i < 24; i++) {
       if (obstacle[i][0] === x && obstacle[i][1] === y) {
         z = 0;
@@ -72,6 +71,15 @@ const initialState = {
 };
 class SnakeGame extends Component {
   state = initialState;
+  componentDidMount() {
+    currScore = this.props.currentScore;
+    this.props.stop();
+  }
+  componentDidUpdate() {
+    this.checkIfOutOfBorders();
+    this.checkIfCollapsed();
+    this.checkIfEat();
+  }
   startgame = () => {
     this.setState({ renderButtonBol: 1 });
     clearInterval(interval_time);
@@ -84,14 +92,6 @@ class SnakeGame extends Component {
     this.props.stop();
     clearInterval(interval_time);
   };
-  componentDidMount() {
-    this.props.stop();
-  }
-  componentDidUpdate() {
-    this.checkIfOutOfBorders();
-    this.checkIfCollapsed();
-    this.checkIfEat();
-  }
 
   moveSnake = () => {
     let dots = [...this.state.snakeDots];
@@ -167,7 +167,7 @@ class SnakeGame extends Component {
       });
       this.enlargeSnake();
       this.increaseSpeed();
-      currentScore = currentScore + 1;
+      currScore = currScore + 1;
     }
   }
 
@@ -192,18 +192,18 @@ class SnakeGame extends Component {
     this.setState(initialState);
     this.props.stop();
     clearInterval(interval_time);
-    currentScore = 3;
+    currScore = 3;
   }
   renderButton = () => {
     if (this.state.renderButtonBol == 0) {
       return (
-        <button className="ui button" id="startgame" onClick={this.startgame}>
+        <button className="ui button" style={{ marginLeft: "37%", marginTop: "0.3%", backgroundColor: "rgb(0,180,0)", color: "white" }} id="startgame" onClick={this.startgame}>
           Start
         </button>
       );
     } else {
       return (
-        <button className="ui button" id="stopgame" onClick={this.stopgame}>
+        <button className="ui button" style={{ marginLeft: "37%", marginTop: "0.3%", backgroundColor: "rgb(200,0,0)", color: "white" }} id="stopgame" onClick={this.stopgame}>
           Pause
         </button>
       );
@@ -212,11 +212,6 @@ class SnakeGame extends Component {
   render() {
     return (
       <>
-        <div style={{ textAlign: "center" }}>
-          <h3>
-            <div>Current Score:{currentScore}</div>
-          </h3>
-        </div>
         <div
           id="myDiv"
           className="game-area"
@@ -226,7 +221,11 @@ class SnakeGame extends Component {
           <Obstacle obs={obstacle} />
           <Food dot={this.state.food} />
         </div>
-        <div>{this.renderButton()}</div>
+        <div style={{ textAlign: "center" }}>
+          <h4>
+            <div>Current Score:{currScore}{this.renderButton()}</div>
+          </h4>
+        </div>
       </>
     );
   }
