@@ -1,24 +1,23 @@
 {
   "files": {
-    "main.css": "/games-ic/static/css/main.ae806f8f.chunk.css",
-    "main.js": "/games-ic/static/js/main.4009e9cd.chunk.js",
-    "main.js.map": "/games-ic/static/js/main.4009e9cd.chunk.js.map",
-    "runtime-main.js": "/games-ic/static/js/runtime-main.09fed433.js",
-    "runtime-main.js.map": "/games-ic/static/js/runtime-main.09fed433.js.map",
-    "static/css/2.150d169a.chunk.css": "/games-ic/static/css/2.150d169a.chunk.css",
-    "static/js/2.23bfb77b.chunk.js": "/games-ic/static/js/2.23bfb77b.chunk.js",
-    "static/js/2.23bfb77b.chunk.js.map": "/games-ic/static/js/2.23bfb77b.chunk.js.map",
-    "index.html": "/games-ic/index.html",
-    "static/css/2.150d169a.chunk.css.map": "/games-ic/static/css/2.150d169a.chunk.css.map",
-    "static/css/main.ae806f8f.chunk.css.map": "/games-ic/static/css/main.ae806f8f.chunk.css.map",
-    "static/js/2.23bfb77b.chunk.js.LICENSE.txt": "/games-ic/static/js/2.23bfb77b.chunk.js.LICENSE.txt",
-    "static/media/modal.3d7ffdfc.png": "/games-ic/static/media/modal.3d7ffdfc.png"
+    "main.css": "/games/static/css/main.147de7ef.chunk.css",
+    "main.js": "/games/static/js/main.122bf80f.chunk.js",
+    "main.js.map": "/games/static/js/main.122bf80f.chunk.js.map",
+    "runtime-main.js": "/games/static/js/runtime-main.a8b97d51.js",
+    "runtime-main.js.map": "/games/static/js/runtime-main.a8b97d51.js.map",
+    "static/css/2.150d169a.chunk.css": "/games/static/css/2.150d169a.chunk.css",
+    "static/js/2.a885df70.chunk.js": "/games/static/js/2.a885df70.chunk.js",
+    "static/js/2.a885df70.chunk.js.map": "/games/static/js/2.a885df70.chunk.js.map",
+    "index.html": "/games/index.html",
+    "static/css/2.150d169a.chunk.css.map": "/games/static/css/2.150d169a.chunk.css.map",
+    "static/css/main.147de7ef.chunk.css.map": "/games/static/css/main.147de7ef.chunk.css.map",
+    "static/js/2.a885df70.chunk.js.LICENSE.txt": "/games/static/js/2.a885df70.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.09fed433.js",
+    "static/js/runtime-main.a8b97d51.js",
     "static/css/2.150d169a.chunk.css",
-    "static/js/2.23bfb77b.chunk.js",
-    "static/css/main.ae806f8f.chunk.css",
-    "static/js/main.4009e9cd.chunk.js"
+    "static/js/2.a885df70.chunk.js",
+    "static/css/main.147de7ef.chunk.css",
+    "static/js/main.122bf80f.chunk.js"
   ]
 }
