@@ -2,7 +2,7 @@
 
 ### Developed using MediaPipe Facemesh and React
 
-![alt text](https://github.com/dabhisharad13/games/public/games.gif "Demo")
+<img src="/public/games.gif" alt="demo" style="width: 640px;"/>
 
 # Getting Started with Create React App
 
