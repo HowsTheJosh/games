@@ -18,7 +18,7 @@ class FbAuth extends React.Component {
           history.push("/games/playground");
         } else {
           this.props.signOut();
-          history.push("/games")
+          history.push("/games");
         }
       });
     };
@@ -35,9 +35,7 @@ class FbAuth extends React.Component {
         this.props.signIn(res.authResponse.userID);
         this.setusernamefunc(res.authResponse.userID);
         history.push("/games/playground");
-      } catch (err) {
-        alert("Login to continue...!!!");
-      }
+      } catch (err) {}
     });
   };
 
@@ -71,7 +69,7 @@ class FbAuth extends React.Component {
             <div className="visible content">
               <i className="facebook icon "></i> Facebook
             </div>
-            <div className="hidden content">Sign In</div>
+            <div className="hidden content">Login</div>
           </div>
         </div>
       );
