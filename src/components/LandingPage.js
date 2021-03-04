@@ -4,7 +4,7 @@ import Typist from "react-typist";
 import Button from "react-bootstrap/Button";
 import { connect } from "react-redux";
 import history from "./History";
-const step1 = ["_/\\_  Namaste  _/\\_", 1000, "Welcome to Kathputli 🎮", 2000];
+const step1 = ["🙏  Namaste  🙏", 2000, "Welcome to Kathputli 🎮", 2000];
 const step2 = [" with Facebook.", 2000, " as Guest.", 2000];
 const obj = { show: false, element: "" };
 
@@ -29,7 +29,7 @@ class LandingPage extends React.Component {
           }}
         >
           <div>
-            <Typical wrapper="span" steps={step1} loop={Infinity} />
+            <Typical wrapper="span" steps={step1} loop={1} />
           </div>
           <div style={{ fontSize: "55px" }}>
             <Typist cursor={obj}>Login</Typist>

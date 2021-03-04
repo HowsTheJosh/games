@@ -9,11 +9,13 @@ import history from "./History";
 import * as tf from "@tensorflow/tfjs";
 import * as facemesh from "@tensorflow-models/face-landmarks-detection";
 import PlaygroundDef from "./PlaygroundDef";
+import Loading from "./Loading";
 var twc = 28,
   x = 0,
   statusbol = 0;
 var net = null,
-  sti;
+  sti,
+  faceWarmup = null;
 const PredictWebCam = (props) => {
   const webcamRef = useRef(null);
   const [snakeComponentCalled, setSnakeComponentCalled] = useState(false);
@@ -22,6 +24,8 @@ const PredictWebCam = (props) => {
     playgroundDefComponenetCalled,
     setPlaygroundDefComponenetCalled,
   ] = useState(true);
+  const [loadingBool, setLoadingBool] = useState(true);
+
   useEffect(() => {
     runFacemesh();
     x = document.getElementById("headerdiv").clientHeight;
@@ -32,7 +36,9 @@ const PredictWebCam = (props) => {
     net = await facemesh.load(facemesh.SupportedPackages.mediapipeFacemesh, {
       maxFaces: 1,
       shouldLoadIrisModel: false,
+      iouThreshold: 0,
     });
+    // console.log("NET", net);
   };
 
   const detect = async (net) => {
@@ -45,14 +51,13 @@ const PredictWebCam = (props) => {
 
       webcamRef.current.video.width = twc - 28;
 
-      const face = await net.estimateFaces({
-        input: video,
-        predictIrises: false,
-      });
-
-      requestAnimationFrame(() => {
+      try {
+        const face = await net.estimateFaces({
+          input: video,
+          predictIrises: false,
+        });
         drawMesh(face);
-      });
+      } catch (err) {}
     }
   };
 
@@ -133,18 +138,46 @@ const PredictWebCam = (props) => {
     clearInterval(sti);
   };
 
+  const checkFaceLoad = async () => {
+    if (
+      typeof webcamRef.current !== "undefined" &&
+      webcamRef.current !== null &&
+      webcamRef.current.video.readyState === 4
+    ) {
+      const video = webcamRef.current.video;
+
+      webcamRef.current.video.width = twc - 28;
+
+      try {
+        net = await facemesh.load(
+          facemesh.SupportedPackages.mediapipeFacemesh,
+          {
+            maxFaces: 1,
+            shouldLoadIrisModel: false,
+            iouThreshold: 0,
+          }
+        );
+
+        faceWarmup = await net.estimateFaces({
+          input: video,
+          predictIrises: false,
+        });
+        // console.log(face);
+        while (faceWarmup === null);
+        setLoadingBool(false);
+      } catch (err) {}
+    } else {
+      alert("Give Camera Permission Please and Refresh.");
+    }
+  };
   return (
     <>
-      <h1>
-        <p id="status"></p>
-      </h1>
       <div className="ui grid" style={{ height: window.innerHeight - x - 60 }}>
         <div
           id="twc"
           className=" three wide column"
           style={{ height: "100%", paddingTop: "0" }}
         >
-          <div>GAME LIST</div>
           <div
             className="ui vertical menu"
             style={{ overflowY: "auto", height: "69%", width: "100%" }}
@@ -153,6 +186,7 @@ const PredictWebCam = (props) => {
               className="item"
               id="showhere"
               onClick={() => {
+                checkFaceLoad();
                 setTestComponentCalled(false);
                 setPlaygroundDefComponenetCalled(false);
                 setSnakeComponentCalled(true);
@@ -182,13 +216,14 @@ const PredictWebCam = (props) => {
           style={{ paddingTop: 0 }}
         >
           {playgroundDefComponenetCalled && <PlaygroundDef />}
-          {snakeComponentCalled && (
+          {!loadingBool && snakeComponentCalled && (
             <SnakeGame
               currentScore={3}
               start={startCalling}
               stop={stopCalling}
             />
           )}
+          {loadingBool && snakeComponentCalled && <Loading />}
           {testComponentCalled && <Test stop={stopCalling} />}
         </div>
       </div>

@@ -10,7 +10,7 @@ const Header = (props) => {
     var guestName = "GUEST" + guestId;
     props.signIn(guestId);
     props.setUserName(guestName);
-    history.push('/games/playground')
+    history.push("/games/playground");
   };
   return (
     <div id="headerdiv" className="ui segment">
@@ -40,7 +40,8 @@ const Header = (props) => {
             }}
             onClick={() =>
               window.open(
-                "https://www.termsfeed.com/live/533ef9ae-a10f-4065-b0c6-a4581222d0c9")
+                "https://www.termsfeed.com/live/533ef9ae-a10f-4065-b0c6-a4581222d0c9"
+              )
             }
           >
             <i className="file icon" />
