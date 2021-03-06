@@ -1,4 +1,4 @@
-## Live Demo https://dabhisharad13.github.io/games
+## Live Demo https://howsthejosh.github.io/games
 
 ### Developed using MediaPipe Facemesh and React
 
